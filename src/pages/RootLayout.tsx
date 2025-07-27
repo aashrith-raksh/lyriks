@@ -10,10 +10,12 @@ const RootLayout = () => {
       <main className="h-screen flex-1 flex flex-col gap-2">
         <div className="flex justify-between items-center mt-2">
           <SidebarTrigger className="rounded-tl-none rounded-bl-none bg-accent" />
-          <ModeToggle />
+          <span className="mr-2">
+            <ModeToggle />
+          </span>
         </div>
 
-        <span className="flex-1">
+        <span className="flex-1 bg-muted-foreground/10">
           <Outlet />
         </span>
       </main>
