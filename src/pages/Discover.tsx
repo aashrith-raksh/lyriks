@@ -1,9 +1,18 @@
+import DiscoverContent from "@/components/discover/DiscoverContent";
+import DiscoverPageHeader from "@/components/discover/DiscoverHeader";
+import DiscoverTopCharts from "@/components/discover/DiscoverTopCharts";
+
 function Discover() {
   return (
-    <div className="flex min-h-30 bg-slate-600 p-2">
-      <div className="border-2 grow">Main box</div>
-      <div className="border-2">Side box</div>
-    </div>
+    <section className="flex h-full gap-6 p-6">
+      <div className="flex h-full flex-col flex-1 gap-6">
+        <DiscoverPageHeader />
+        <DiscoverContent />
+      </div>
+      <div className="basis-1/3 max-md:hidden">
+        <DiscoverTopCharts />
+      </div>
+    </section>
   );
 }
 
