@@ -7,6 +7,7 @@ import AroundYou from "@/pages/AroundYou";
 import ArtistDetails from "./pages/ArtistDetails";
 import SongDetails from "@/pages/SongDetails";
 import Search from "@/pages/Search";
+import Test from "./components/test/Test";
 
 const router = createBrowserRouter([
   {
@@ -20,13 +21,12 @@ const router = createBrowserRouter([
       { path: "artists/:id", element: <ArtistDetails /> },
       { path: "songs/:songid", element: <SongDetails /> },
       { path: "search/:searchTerm", element: <Search /> },
+      { path: "test", element: <Test /> },
     ],
   },
 ]);
 function App() {
-  return (
-      <RouterProvider router={router} />
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
