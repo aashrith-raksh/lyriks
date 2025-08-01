@@ -1,6 +1,6 @@
 import DiscoverContent from "@/components/discover/DiscoverContent";
 import DiscoverPageHeader from "@/components/discover/DiscoverHeader";
-import DiscoverTopCharts from "@/components/discover/DiscoverTopCharts";
+import DiscoverTopCharts from "@/components/discover/DiscoverRightSideBar";
 
 function Discover() {
   return (
