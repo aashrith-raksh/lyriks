@@ -1,12 +1,31 @@
 import { Loader2 } from "lucide-react";
-import { Card, CardContent, CardFooter } from "../ui/card";
 import { useGetTopCharsQuery } from "@/redux/services/shazamCore";
+import SongCard from "./SongCard";
+import { useEffect } from "react";
+import { useAppDispatch } from "@/redux/hook";
+import { setCharts } from "@/redux/features/playerSlice";
 
 const DiscoverContent = () => {
   const { data, isFetching, isError } = useGetTopCharsQuery({});
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (data) {
+      const songs = data.slice(0,10).map(({ id, attributes }) => ({
+        artworkUrl: attributes.artwork.url,
+        previewUrl: attributes.previews[0]?.url || "",
+        chartId: id,
+        title: attributes.albumName,
+        artist: attributes.artistName,
+      }));
+
+      dispatch(setCharts(songs));
+    }
+  }, [data]);
+
   let content = (
     <div className="flex-1 flex justify-center items-center">
-        <Loader2 size={40}/>
+      <Loader2 size={40} />
     </div>
   );
 
@@ -15,7 +34,9 @@ const DiscoverContent = () => {
       content = (
         <div className="flex-1 flex justify-center items-center">
           <p className="text-red-500 text-center font-light">
-            <span className="text-xl font-semibold">Error while fetching top charts</span>
+            <span className="text-xl font-semibold">
+              Error while fetching top charts
+            </span>
             <br />
             Please try again later
           </p>
@@ -25,23 +46,16 @@ const DiscoverContent = () => {
       content = (
         <div className="grid discover-content-grid gap-4 2xl:grid-cols-5">
           {data &&
-            data.map(({ id, attributes }) => (
-              <Card key={id} className="p-3 h-auto border-none">
-                <CardContent className="p-0">
-                  <img
-                    src={attributes.artwork.url}
-                    alt={attributes.albumName + " album cover"}
-                    className="w-full h-40 object-cover rounded-md"
-                  />
-                </CardContent>
-                <CardFooter className="flex flex-col items-start px-0">
-                  <span className="font-semibold">{attributes.artistName}</span>
-                  <span className="text-muted-foreground text-sm">
-                    {attributes.albumName}
-                  </span>
-                </CardFooter>
-              </Card>
-            ))}
+            data
+              .slice(0, 10)
+              .map(({ id, attributes, relationships }, idx) => (
+                <SongCard
+                  id={id}
+                  attributes={attributes}
+                  relationships={relationships}
+                  songIndex={idx}
+                />
+              ))}
         </div>
       );
     }
