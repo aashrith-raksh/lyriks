@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-interface Song {
+export interface Song {
   artworkUrl: string;
   previewUrl: string;
   chartId: string | number;
@@ -12,12 +12,20 @@ interface PlayerState {
   charts: Song[];
   isPlaying: boolean;
   activeSongIndex: number | null;
+  volume: number;
+  isMuted: boolean;
+  duration?: number;
+  currentTime: number;
 }
 
 const initialState: PlayerState = {
   charts: [],
   isPlaying: false,
   activeSongIndex: null,
+  volume: 75,
+  isMuted: false,
+  duration: undefined,
+  currentTime: 0,
 };
 
 const playerSlice = createSlice({
@@ -37,10 +45,31 @@ const playerSlice = createSlice({
     pause: (state) => {
       state.isPlaying = false;
     },
+    setVolume: (state, action: PayloadAction<number>) => {
+      state.volume = action.payload;
+    },
+    setIsMuted: (state, action: PayloadAction<boolean>) => {
+      state.isMuted = action.payload;
+    },
+    setDuration: (state, action: PayloadAction<number | undefined>) => {
+      state.duration = action.payload;
+    },
+    setCurrentTime: (state, action: PayloadAction<number>) => {
+      state.currentTime = action.payload;
+    },
   },
 });
 
 const playerReducer = playerSlice.reducer;
 export default playerReducer;
 
-export const {setActiveSongIndex, setCharts, resume, pause} = playerSlice.actions
+export const {
+  setActiveSongIndex,
+  setCharts,
+  resume,
+  pause,
+  setVolume,
+  setIsMuted,
+  setDuration,
+  setCurrentTime
+} = playerSlice.actions;
