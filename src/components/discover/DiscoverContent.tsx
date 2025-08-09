@@ -65,12 +65,3 @@ const DiscoverContent = () => {
 };
 
 export default DiscoverContent;
-
-/*
-1. Implement Loading cards animation
-2. Routing when clicked on song title 
-3. ROuting when clicked on artist name
-=================================
-    4.THE. ACTUAL. MUSIC. PLAYER.
-=================================
-*/

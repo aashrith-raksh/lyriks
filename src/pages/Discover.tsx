@@ -1,6 +1,7 @@
 import DiscoverContent from "@/components/discover/DiscoverContent";
 import DiscoverPageHeader from "@/components/discover/DiscoverHeader";
 import DiscoverTopCharts from "@/components/discover/DiscoverRightSideBar";
+import MusicPlayer from "@/components/discover/MusicPlayer";
 
 function Discover() {
   return (
@@ -8,6 +9,7 @@ function Discover() {
       <div className="flex h-full flex-col flex-1 gap-6">
         <DiscoverPageHeader />
         <DiscoverContent />
+        <MusicPlayer/>
       </div>
       <div className="basis-1/3 max-md:hidden">
         <DiscoverTopCharts />
