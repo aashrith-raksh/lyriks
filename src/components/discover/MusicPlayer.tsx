@@ -79,7 +79,7 @@ export default function MusicPlayer() {
         audioRef.current.removeEventListener("ended", handleEnded);
       }
     };
-  }, [activeSongRef, isPlaying]);
+  }, [activeSongRef.current, isPlaying]);
 
   useEffect(() => {
     if (audioRef.current) {
