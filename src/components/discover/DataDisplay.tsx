@@ -1,7 +1,7 @@
 import { Loader2 } from "lucide-react";
 import { useGetTopCharsQuery } from "@/redux/services/shazamCore";
-import { useEffect, type ReactNode } from "react";
-import { useAppDispatch } from "@/redux/hook";
+import { useEffect,  useState, type ReactNode } from "react";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { setCharts } from "@/redux/features/playerSlice";
 import type { TopChartsResponse } from "@/redux/services/types/get-top-charts-response";
 
@@ -11,25 +11,39 @@ type DataDisplayProps = {
 };
 
 const DataDisplay = ({ children, displayCardVariant }: DataDisplayProps) => {
-  const { data, isFetching, isError } = useGetTopCharsQuery({});
+  const { genre, searchTerm } = useAppSelector((state) => state.songsFilter);
+  const { data, isFetching, isError } = useGetTopCharsQuery({
+    genre_code: genre,
+  });
   const dispatch = useAppDispatch();
+  const [miniData, setMiniData] = useState<TopChartsResponse[]>([]);
+  const [filteredData, setFilteredData] = useState<TopChartsResponse[]>([]);
+
 
   useEffect(() => {
-    
-    if (displayCardVariant == "songCard") {
-      if (data) {
-        const songs = data.slice(0, 10).map(({ id, attributes }) => ({
+    setFilteredData(
+      miniData.filter((item) =>
+        item.attributes.albumName.toLowerCase().includes(searchTerm)
+      )
+    );
+  }, [searchTerm, miniData]);
+
+  useEffect(() => {
+    if (data) {
+      setMiniData(data.slice(0, 10));
+      if (displayCardVariant == "songCard") {
+        const songs = miniData.map(({ id, attributes }) => ({
           artworkUrl: attributes.artwork.url,
           previewUrl: attributes.previews[0]?.url || "",
           chartId: id,
           title: attributes.albumName,
           artist: attributes.artistName,
         }));
-  
+
         dispatch(setCharts(songs));
       }
     }
-  }, [data, dispatch, displayCardVariant]);
+  }, [data, dispatch, displayCardVariant, miniData]);
 
   let content = (
     <div className="flex-1 flex justify-center items-center">
@@ -53,7 +67,7 @@ const DataDisplay = ({ children, displayCardVariant }: DataDisplayProps) => {
     } else {
       content = (
         <div className="grid discover-content-grid gap-8 2xl:grid-cols-5">
-          {data && data.slice(0, 10).map((song, idx) => children(song, idx))}
+          {filteredData.map((song, idx) => children(song, idx))}
         </div>
       );
     }
