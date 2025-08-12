@@ -43,7 +43,7 @@ const DataDisplay = ({ children, displayCardVariant }: DataDisplayProps) => {
         dispatch(setCharts(songs));
       }
     }
-  }, [data, dispatch, displayCardVariant, miniData]);
+  }, [data, dispatch, displayCardVariant]);
 
   let content = (
     <div className="flex-1 flex justify-center items-center">
