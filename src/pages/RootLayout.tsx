@@ -15,7 +15,7 @@ const RootLayout = () => {
           </span>
         </div>
 
-        <span className="flex-1 bg-muted-foreground/10 rounded-md">
+        <span className="flex-1  rounded-md">
           <Outlet />
         </span>
       </main>
