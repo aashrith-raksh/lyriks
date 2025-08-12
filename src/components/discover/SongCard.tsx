@@ -7,10 +7,10 @@ import type {
 import PlayPauseButton from "./PlayPauseButton";
 import { useAppSelector } from "@/redux/hook";
 
-type SongCardArgs = {
-  id: string | number;
-  attributes: Attributes;
-  relationships: Relationships;
+export type SongCardArgs = {
+  id?: string | number | undefined;
+  attributes?: Attributes;
+  relationships?: Relationships;
   songIndex: number;
 };
 
@@ -28,30 +28,32 @@ const SongCard = ({
 
   return (
     <Card
-      key={id}
+      key={id ?? attributes!.albumName}
       className={`p-3 h-auto border-none ${
-        isActive && "shadow-2xl  shadow-foreground/70"
+        isActive && "shadow-xl  shadow-foreground/50"
       }`}
     >
       <CardContent className="p-0 relative group">
         <img
-          src={attributes.artwork.url}
-          alt={attributes.albumName + " album cover"}
+          src={attributes!.artwork.url}
+          alt={attributes!.albumName + " album cover"}
           className="w-full h-40 object-cover rounded-md"
         />
         <PlayPauseButton songIndex={songIndex} />
       </CardContent>
       <CardFooter className="flex flex-col items-start px-0">
-        <span className="font-semibold">{attributes.albumName}</span>
+        <span className="font-semibold">{attributes!.albumName}</span>
         <Link
-          to={`artists/${relationships.artists.data[0].id}`}
+          to={`artists/${relationships!.artists.data[0].id}`}
           className="text-muted-foreground text-sm hover:underline"
         >
-          {attributes.artistName}
+          {attributes!.artistName}
         </Link>
       </CardFooter>
     </Card>
   );
 };
+
+
 
 export default SongCard;
