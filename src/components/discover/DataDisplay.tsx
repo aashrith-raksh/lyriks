@@ -1,6 +1,6 @@
 import { Loader2 } from "lucide-react";
 import { useGetTopCharsQuery } from "@/redux/services/shazamCore";
-import { useEffect,  useState, type ReactNode } from "react";
+import { useEffect, useMemo, type ReactNode } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { setCharts } from "@/redux/features/playerSlice";
 import type { TopChartsResponse } from "@/redux/services/types/get-top-charts-response";
@@ -16,23 +16,21 @@ const DataDisplay = ({ children, displayCardVariant }: DataDisplayProps) => {
     genre_code: genre,
   });
   const dispatch = useAppDispatch();
-  const [miniData, setMiniData] = useState<TopChartsResponse[]>([]);
-  const [filteredData, setFilteredData] = useState<TopChartsResponse[]>([]);
 
-
-  useEffect(() => {
-    setFilteredData(
-      miniData.filter((item) =>
-        item.attributes.albumName.toLowerCase().includes(searchTerm)
-      )
+  const filteredData = useMemo(() => {
+    return (
+      data?.slice(0,20).filter((item) =>
+        item.attributes.albumName
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
+      ) ?? []
     );
-  }, [searchTerm, miniData]);
+  }, [data, searchTerm]);
 
   useEffect(() => {
     if (data) {
-      setMiniData(data.slice(0, 10));
       if (displayCardVariant == "songCard") {
-        const songs = miniData.map(({ id, attributes }) => ({
+        const songs = data.slice(0, 20).map(({ id, attributes }) => ({
           artworkUrl: attributes.artwork.url,
           previewUrl: attributes.previews[0]?.url || "",
           chartId: id,
@@ -67,7 +65,7 @@ const DataDisplay = ({ children, displayCardVariant }: DataDisplayProps) => {
     } else {
       content = (
         <div className="grid discover-content-grid gap-8 2xl:grid-cols-5">
-          {filteredData.map((song, idx) => children(song, idx))}
+          {filteredData?.map((song, idx) => children(song, idx))}
         </div>
       );
     }

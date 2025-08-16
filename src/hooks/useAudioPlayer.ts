@@ -17,7 +17,6 @@ export default function useAudioPlayer() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    console.log("SONG CHANGE EFFECT RUNNING\n")
     if (!activeSong) return
     const handleTimeUpdate = () => {
       if (audioRef.current) {
