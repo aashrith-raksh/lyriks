@@ -15,7 +15,7 @@ import DataDisplay from "./DataDisplay";
 const TopCharts = () => {
   // const { data } = useGetTopCharsQuery({});
   return (
-    <Card className="w-full max-w-md mx-auto gap-4 mb-4">
+    <Card className="w-full max-w-md mx-auto gap-4 mb-4 max-h-7/12">
       <CardHeader className="flex flex-row items-baseline justify-between">
         <CardTitle className="text-lg">Top Charts</CardTitle>
         <CardAction className=" self-auto">
@@ -27,7 +27,7 @@ const TopCharts = () => {
           </Link>
         </CardAction>
       </CardHeader>
-      <CardContent className="py-0">
+      <CardContent className="py-0 overflow-y-scroll scrollbar-custom">
         <DataDisplay displayCardVariant="chartCard">
           {(song: Partial<ChartCardArgs>, idx: number) => (
             <ChartCard {...song} songIndex={idx} />

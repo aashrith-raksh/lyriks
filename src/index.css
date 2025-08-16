@@ -119,8 +119,26 @@
   }
 }
 
-@layer components{
-  .discover-content-grid{
+@layer components {
+  .discover-content-grid {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+
+  /* globals.css */
+  .scrollbar-custom {
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: #374151 transparent; /* thumb + track */
+
+    /* Chrome, Safari, Edge */
+  }
+  .scrollbar-custom::-webkit-scrollbar {
+    width: 8px;
+  }
+  .scrollbar-custom::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scrollbar-custom::-webkit-scrollbar-thumb {
+    background-color: #374151;
+    border-radius: 9999px;
   }
 }
