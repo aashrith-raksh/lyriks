@@ -1,9 +1,9 @@
-import { Loader2 } from "lucide-react";
 import { useGetTopCharsQuery } from "@/redux/services/shazamCore";
 import { useEffect, useMemo, type ReactNode } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { setCharts } from "@/redux/features/playerSlice";
 import type { TopChartsResponse } from "@/redux/services/types/get-top-charts-response";
+import  Loader from "@/assets/loader.svg"
 
 type DataDisplayProps = {
   children: (song: Partial<TopChartsResponse>, idx: number) => ReactNode;
@@ -45,7 +45,7 @@ const DataDisplay = ({ children, displayCardVariant }: DataDisplayProps) => {
 
   let content = (
     <div className="flex-1 flex justify-center items-center">
-      <Loader2 size={40} />
+      <img src={Loader} width={130}/>
     </div>
   );
 
