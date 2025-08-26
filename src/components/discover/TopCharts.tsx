@@ -13,9 +13,8 @@ import PlayPauseButton from "./PlayPauseButton";
 import DataDisplay from "./DataDisplay";
 
 const TopCharts = () => {
-  // const { data } = useGetTopCharsQuery({});
   return (
-    <Card className="w-full max-w-md mx-auto gap-4 mb-4 max-h-7/12">
+    <Card className="w-full max-w-md mx-auto gap-4 mb-4 max-h-full">
       <CardHeader className="flex flex-row items-baseline justify-between">
         <CardTitle className="text-lg">Top Charts</CardTitle>
         <CardAction className=" self-auto">
