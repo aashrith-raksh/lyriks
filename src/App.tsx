@@ -8,18 +8,24 @@ import ArtistDetails from "./pages/ArtistDetails";
 import SongDetails from "@/pages/SongDetails";
 import Search from "@/pages/Search";
 import Test from "./components/test/Test";
+import HomeLayout from "@/layouts/HomeLayout";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
     children: [
-      { index: true, element: <Discover /> },
+      {
+        element: <HomeLayout />,
+        children: [
+          { index: true, element: <Discover /> },
+          { path: "songs/:songId", element: <SongDetails /> },
+        ],
+      },
       { path: "top-artists", element: <TopArtists /> },
       { path: "top-charts", element: <TopCharts /> },
       { path: "around-you", element: <AroundYou /> },
       { path: "artists/:id", element: <ArtistDetails /> },
-      { path: "songs/:songid", element: <SongDetails /> },
       { path: "search/:searchTerm", element: <Search /> },
       { path: "test", element: <Test /> },
     ],

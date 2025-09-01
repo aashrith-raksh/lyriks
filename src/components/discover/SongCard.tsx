@@ -42,7 +42,7 @@ const SongCard = ({
         <PlayPauseButton songIndex={songIndex} />
       </CardContent>
       <CardFooter className="flex flex-col items-start px-0">
-        <span className="font-semibold">{attributes!.albumName}</span>
+        <Link className="font-semibold hover:underline" to={`/songs/${id}`}>{attributes!.albumName}</Link>
         <Link
           to={`artists/${relationships!.artists.data[0].id}`}
           className="text-muted-foreground text-sm hover:underline"
