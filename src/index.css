@@ -120,8 +120,9 @@
 }
 
 @layer components {
-  .discover-content-grid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  .auto-grid{
+    --min-col-size: 200px;
+    grid-template-columns: repeat(auto-fill, minmax(var(--min-col-size), 1fr));
   }
 
   /* globals.css */

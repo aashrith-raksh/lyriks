@@ -1,9 +1,9 @@
 import { useGetTopCharsQuery } from "@/redux/services/shazamCore";
-import { useEffect, useMemo, type ReactNode } from "react";
+import { useEffect, useMemo, type CSSProperties, type ReactNode } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { setCharts } from "@/redux/features/playerSlice";
 import type { TopChartsResponse } from "@/redux/services/types/get-top-charts-response";
-import  Loader from "@/assets/loader.svg"
+import Loader from "@/assets/loader.svg";
 
 type DataDisplayProps = {
   children: (song: Partial<TopChartsResponse>, idx: number) => ReactNode;
@@ -19,11 +19,13 @@ const DataDisplay = ({ children, displayCardVariant }: DataDisplayProps) => {
 
   const filteredData = useMemo(() => {
     return (
-      data?.slice(0,20).filter((item) =>
-        item.attributes.albumName
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase())
-      ) ?? []
+      data
+        ?.slice(0, 20)
+        .filter((item) =>
+          item.attributes.albumName
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase())
+        ) ?? []
     );
   }, [data, searchTerm]);
 
@@ -45,7 +47,7 @@ const DataDisplay = ({ children, displayCardVariant }: DataDisplayProps) => {
 
   let content = (
     <div className="flex-1 flex justify-center items-center">
-      <img src={Loader} width={130}/>
+      <img src={Loader} width={130} />
     </div>
   );
 
@@ -64,7 +66,10 @@ const DataDisplay = ({ children, displayCardVariant }: DataDisplayProps) => {
       );
     } else {
       content = (
-        <div className="grid discover-content-grid gap-8 2xl:grid-cols-5">
+        <div
+          className="grid auto-grid gap-8 "
+          style={{"--min-col-size": displayCardVariant == "chartCard" ? "1fr" : "200px"} as CSSProperties}
+        >
           {filteredData?.map((song, idx) => children(song, idx))}
         </div>
       );
