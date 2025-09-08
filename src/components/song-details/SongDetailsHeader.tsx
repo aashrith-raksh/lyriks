@@ -1,21 +1,7 @@
-import type { TrackDetailsResponse } from "@/redux/services/types/get-track-details-response";
 import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "react-router-dom";
+import type { SongDetailsHeaderArgs, ArtistDetails } from "./types";
 
-type SongDetailsHeaderArgs = {
-    data?: TrackDetailsResponse
-}
-
-
-type ArtistDetails = {
-  attributes: ArtistAttributes;
-  id: string;
-  type: string;
-};
-
-type ArtistAttributes = {
-  name: string;
-};
 
 const SongDetailsHeader = ({data}:SongDetailsHeaderArgs) => {
   const artworkUrl =
