@@ -23,11 +23,7 @@ const TopCharts = () => {
         </CardAction>
       </CardHeader>
       <CardContent className="py-0 overflow-y-scroll scrollbar-custom">
-        <DataDisplay cardVariant="chartCard" dataType="charts">
-          {(song: Partial<ChartCardArgs>, idx: number) => (
-            <ChartCard {...song} songIndex={idx} />
-          )}
-        </DataDisplay>
+        <DataDisplay cardVariant="chartCard" dataType="charts" />
       </CardContent>
     </Card>
   );

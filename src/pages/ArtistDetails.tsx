@@ -1,6 +1,9 @@
+import DataDisplay from "@/components/discover/DataDisplay";
 
 function ArtistDetails() {
-  return <div>Artist Details Page</div>;
+  return (
+    <DataDisplay cardVariant="chartCard" dataType="artistDetails"/>
+  );
 }
 
 export default ArtistDetails;
