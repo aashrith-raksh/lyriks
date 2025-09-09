@@ -1,16 +1,20 @@
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardFooter } from "../ui/card";
 import type {
-  Attributes,
   Relationships,
 } from "@/redux/services/types/get-top-charts-response";
 import PlayPauseButton from "./PlayPauseButton";
 import { useAppSelector } from "@/redux/hook";
 
+type SongCardAttributes = {
+  albumName?: string;
+  artwork?: {url:string};
+  artistName?: string;
+}
 export type SongCardArgs = {
   id?: string | number | undefined;
-  attributes?: Partial<Attributes>;
-  relationships?: Relationships;
+  attributes?: SongCardAttributes;
+  relationships?: Partial<Relationships>;
   songIndex: number;
 };
 
