@@ -5,11 +5,7 @@ import {
   CardTitle,
   CardAction,
   CardContent,
-  CardFooter,
 } from "../ui/card";
-import type { SongCardArgs } from "./SongCard";
-import { useAppSelector } from "@/redux/hook";
-import PlayPauseButton from "./PlayPauseButton";
 import DataDisplay from "./DataDisplay";
 
 const TopCharts = () => {
@@ -36,6 +32,5 @@ const TopCharts = () => {
     </Card>
   );
 };
-
 
 export default TopCharts;
