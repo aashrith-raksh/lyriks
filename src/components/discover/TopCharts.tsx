@@ -27,7 +27,7 @@ const TopCharts = () => {
         </CardAction>
       </CardHeader>
       <CardContent className="py-0 overflow-y-scroll scrollbar-custom">
-        <DataDisplay displayCardVariant="chartCard">
+        <DataDisplay cardVariant="chartCard" dataType="charts">
           {(song: Partial<ChartCardArgs>, idx: number) => (
             <ChartCard {...song} songIndex={idx} />
           )}
@@ -37,51 +37,5 @@ const TopCharts = () => {
   );
 };
 
-type ChartCardArgs = SongCardArgs;
-
-const ChartCard = ({
-  id,
-  attributes,
-  relationships,
-  songIndex,
-}: ChartCardArgs) => {
-  const activeSongIndex = useAppSelector(
-    (state) => state.player.activeSongIndex
-  );
-
-  const isActive = songIndex == activeSongIndex;
-  return (
-    <>
-      <Card
-        key={id}
-        className={`h-auto border-none !flex-row gap-4 p-2 items-center justify-between ${
-          isActive && "shadow-lg   shadow-foreground/10"
-        }`}
-      >
-        <CardHeader className="p-0 basis-1/6 !gap-0 rounded-full">
-          <img
-            src={attributes!.artwork.url}
-            alt={attributes!.albumName + " album cover"}
-            className="w-full max-w-full object-contain rounded-full"
-          />
-        </CardHeader>
-        <CardContent className="flex flex-col flex-1 items-start p-0">
-          <p className="font-normal text-[13px] leading-5">
-            {attributes!.albumName}
-          </p>
-          <Link
-            to={`artists/${relationships!.artists.data[0].id}`}
-            className="text-muted-foreground text-xs hover:underline"
-          >
-            {attributes!.artistName}
-          </Link>
-        </CardContent>
-        <CardFooter className="basis-1/6 grid p-0 place-content-center">
-          <PlayPauseButton songIndex={songIndex} variant="chartCard" />
-        </CardFooter>
-      </Card>
-    </>
-  );
-};
 
 export default TopCharts;

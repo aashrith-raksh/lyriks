@@ -9,7 +9,7 @@ import { useAppSelector } from "@/redux/hook";
 
 export type SongCardArgs = {
   id?: string | number | undefined;
-  attributes?: Attributes;
+  attributes?: Partial<Attributes>;
   relationships?: Relationships;
   songIndex: number;
 };
@@ -24,19 +24,25 @@ const SongCard = ({
     (state) => state.player.activeSongIndex
   );
 
+  const albumName = attributes?.albumName || "Unknown Album"
+  const artworkUrl = attributes?.artwork?.url || ""
+  const artistName = attributes?.artistName || "Unknown Artist"
+  const artistId = relationships?.artists?.data[0]?.id || null
+
+
   const isActive = songIndex == activeSongIndex;
 
   return (
     <Card
-      key={id ?? attributes!.albumName}
+      key={id ?? albumName}
       className={`p-3 h-auto border-none ${
         isActive && "shadow-xl  shadow-foreground/50"
       }`}
     >
       <CardContent className="p-0 relative group">
         <img
-          src={attributes!.artwork.url}
-          alt={attributes!.albumName + " album cover"}
+          src={artworkUrl}
+          alt={albumName + " album cover"}
           className="w-full h-40 object-cover rounded-md"
         />
         <PlayPauseButton songIndex={songIndex} />
@@ -44,10 +50,10 @@ const SongCard = ({
       <CardFooter className="flex flex-col items-start px-0">
         <Link className="font-semibold hover:underline" to={`/songs/${id}`}>{attributes!.albumName}</Link>
         <Link
-          to={`artists/${relationships!.artists.data[0].id}`}
+          to={`artists/${artistId}`}
           className="text-muted-foreground text-sm hover:underline"
         >
-          {attributes!.artistName}
+          {artistName}
         </Link>
       </CardFooter>
     </Card>
