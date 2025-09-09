@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type { TopChartsResponse } from "./types/get-top-charts-response";
 import type { TrackDetailsResponse } from "./types/get-track-details-response";
+import type { ArtistDetailsResponse } from "./types/get-artist-details-response";
 
 type GetTopChartsArgs = {
   genre_code?: string;
@@ -9,6 +10,10 @@ type GetTopChartsArgs = {
 
 type GetTrackDetailsArgs = {
   songId?: number | string
+}
+
+type GetArtistDetailsArgs = {
+  artistId?: number | string
 }
 const shazamCoreApi = createApi({
   reducerPath: "shazamCoreApi",
@@ -30,9 +35,12 @@ const shazamCoreApi = createApi({
     }),
     getTrackDetailsById: builder.query<TrackDetailsResponse, GetTrackDetailsArgs>({
       query: ({songId}) => `/v2/tracks/details?track_id=${songId}`
+    }),
+    getArtistDetailsById: builder.query<ArtistDetailsResponse, GetArtistDetailsArgs>({
+      query: ({artistId}) => `v2/artists/details?artist_id=${artistId}`
     })
   }),
 });
 
-export const { useGetTopCharsQuery, useGetTrackDetailsByIdQuery } = shazamCoreApi;
+export const { useGetTopCharsQuery, useGetTrackDetailsByIdQuery, useGetArtistDetailsByIdQuery } = shazamCoreApi;
 export default shazamCoreApi;
