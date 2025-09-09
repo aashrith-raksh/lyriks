@@ -20,12 +20,12 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <Discover /> },
           { path: "songs/:songId", element: <SongDetails /> },
+          { path: "artists/:id", element: <ArtistDetails /> },
         ],
       },
       { path: "top-artists", element: <TopArtists /> },
       { path: "top-charts", element: <TopCharts /> },
       { path: "around-you", element: <AroundYou /> },
-      { path: "artists/:id", element: <ArtistDetails /> },
       { path: "search/:searchTerm", element: <Search /> },
       { path: "test", element: <Test /> },
     ],
