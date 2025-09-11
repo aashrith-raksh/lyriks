@@ -5,7 +5,7 @@ import {
   CardTitle,
   CardAction,
   CardContent,
-} from "../ui/card";
+} from "./ui/card";
 import DataDisplay from "./DataDisplay";
 
 const TopCharts = () => {

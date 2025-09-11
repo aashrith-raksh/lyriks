@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Card, CardContent, CardFooter } from "../ui/card";
+import { Card, CardContent, CardFooter } from "./ui/card";
 import type {
   Relationships,
 } from "@/redux/services/types/get-top-charts-response";

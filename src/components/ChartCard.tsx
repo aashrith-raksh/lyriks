@@ -2,7 +2,7 @@ export type ChartCardArgs = SongCardArgs;
 import type { SongCardArgs } from "./SongCard";
 import { useAppSelector } from "@/redux/hook";
 import PlayPauseButton from "./PlayPauseButton";
-import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
+import { Card, CardContent, CardFooter, CardHeader } from "./ui/card";
 import { Link } from "react-router-dom";
 
 const ChartCard = ({
