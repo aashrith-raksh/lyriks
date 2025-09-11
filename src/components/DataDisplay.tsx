@@ -2,14 +2,12 @@ import {
   useGetArtistDetailsByIdQuery,
   useGetTopCharsQuery,
 } from "@/redux/services/shazamCore";
-import { useEffect, useMemo, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useMemo } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { setCharts } from "@/redux/features/playerSlice";
 import type { TopChartsResponse } from "@/redux/services/types/get-top-charts-response";
-import Loader from "@/assets/loader.svg";
 import { useParams } from "react-router-dom";
 import type { ArtistDetailsResponse } from "@/redux/services/types/get-artist-details-response";
-import { cn } from "@/lib/utils";
 import SongCard from "./SongCard";
 import ChartCard from "./ChartCard";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
@@ -19,6 +17,9 @@ import {
   getTopSongsOfArtist,
   mapTopChartsToSongs,
 } from "@/utils";
+import Loading from "./Loading";
+import Error from "./Error";
+import DataDisplayContent from "./DataDisplayContent";
 
 type DataDisplayProps = {
   cardVariant: "chartCard" | "songCard";
@@ -87,7 +88,7 @@ const DataDisplay = ({ cardVariant, dataType }: DataDisplayProps) => {
       content = (
         <>
           {dataType !== "artistDetails" && (
-            <Content dataType={dataType} cardVariant={cardVariant}>
+            <DataDisplayContent dataType={dataType} cardVariant={cardVariant}>
               {filteredData?.map((song, idx) =>
                 dataType === "songs" ? (
                   <li key={song?.id}>
@@ -99,7 +100,7 @@ const DataDisplay = ({ cardVariant, dataType }: DataDisplayProps) => {
                   </li>
                 )
               )}
-            </Content>
+            </DataDisplayContent>
           )}
 
           {dataType === "artistDetails" && (
@@ -110,7 +111,7 @@ const DataDisplay = ({ cardVariant, dataType }: DataDisplayProps) => {
               />
               <br />
               <p className="text-2xl font-bold">Top Songs by Artist</p>
-              <Content dataType={dataType} cardVariant={cardVariant}>
+              <DataDisplayContent dataType={dataType} cardVariant={cardVariant}>
                 {topSongsOfArtist?.map((song, idx) => {
                   const { id, attributes } = song;
                   const chartCardArgs = { id, attributes };
@@ -120,7 +121,7 @@ const DataDisplay = ({ cardVariant, dataType }: DataDisplayProps) => {
                     </li>
                   );
                 })}
-              </Content>
+              </DataDisplayContent>
             </>
           )}
         </>
@@ -131,50 +132,9 @@ const DataDisplay = ({ cardVariant, dataType }: DataDisplayProps) => {
   return content;
 };
 
-const Content = ({
-  dataType,
-  cardVariant,
-  children,
-}: {
-  dataType: string;
-  cardVariant: string;
-  children: ReactNode;
-}) => {
-  return (
-    <ul
-      className={cn(
-        "grid auto-grid",
-        dataType === "artistDetails" ? "gap-4" : "gap-8"
-      )}
-      style={
-        {
-          "--min-col-size": cardVariant === "chartCard" ? "1fr" : "200px",
-        } as CSSProperties
-      }
-    >
-      {children}
-    </ul>
-  );
-};
 
-const Error = ({ errorMessage }: { errorMessage: string }) => {
-  return (
-    <div className="flex-1 flex justify-center items-center">
-      <p className="text-red-500 text-center font-light">
-        <span className="text-xl font-semibold">Error while fetching data</span>
-        <br />
-        {errorMessage}
-      </p>
-    </div>
-  );
-};
 
-const Loading = () => {
-  return (
-    <div className="flex-1 flex justify-center items-center">
-      <img src={Loader} width={130} />
-    </div>
-  );
-};
+
+
 
 export default DataDisplay;
