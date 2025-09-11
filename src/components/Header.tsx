@@ -75,6 +75,7 @@ const Header = ({ data, headerType }: HeaderArgs) => {
           src={artworkUrl}
           alt={`${headerType == "songHeader" ? albumName : artistName} cover`}
           width={220}
+          height={220}
           className="rounded-full w-32 block object-center aspect-square"
         />
         <CardContent className="grow p-0">

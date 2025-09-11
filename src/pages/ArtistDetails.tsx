@@ -1,4 +1,4 @@
-import DataDisplay from "@/components/discover/DataDisplay";
+import DataDisplay from "@/components/DataDisplay";
 
 function ArtistDetails() {
   return (

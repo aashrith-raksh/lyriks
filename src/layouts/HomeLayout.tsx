@@ -1,4 +1,4 @@
-import TopCharts from '@/components/discover/TopCharts'
+import TopCharts from '@/components/TopCharts'
 import { Outlet } from 'react-router-dom'
 
 const HomeLayout = () => {

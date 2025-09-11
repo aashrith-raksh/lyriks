@@ -1,4 +1,4 @@
-import DataDisplay from "@/components/discover/DataDisplay";
+import DataDisplay from "@/components/DataDisplay";
 import DiscoverPageHeader from "@/components/discover/DiscoverHeader";
 import MusicPlayer from "@/components/discover/MusicPlayer";
 
