@@ -1,7 +1,7 @@
 import { useGetTrackDetailsByIdQuery } from "@/redux/services/shazamCore";
 import { useParams } from "react-router-dom";
 import Loader from "@/assets/loader.svg";
-import SongDetailsHeader from "@/components/song-details/SongDetailsHeader";
+import SongDetailsHeader from "@/components/Header";
 import Lyrics from "@/components/song-details/Lyrics";
 
 
@@ -20,7 +20,7 @@ function SongDetails() {
 
   return (
     <>
-    <SongDetailsHeader data={data}/>
+    <SongDetailsHeader data={data} headerType={"songHeader"}/>
     <Lyrics data={data}/>
     </>
     

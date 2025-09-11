@@ -2,20 +2,33 @@ import {
   useGetArtistDetailsByIdQuery,
   useGetTopCharsQuery,
 } from "@/redux/services/shazamCore";
-import { useEffect, useMemo, type CSSProperties } from "react";
+import {
+  useEffect,
+  useMemo,
+  type CSSProperties,
+  type ReactNode,
+} from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { setCharts } from "@/redux/features/playerSlice";
 import type { TopChartsResponse } from "@/redux/services/types/get-top-charts-response";
 import Loader from "@/assets/loader.svg";
 import { useParams } from "react-router-dom";
-import type { ArtistDetailsResponse } from "@/redux/services/types/get-artist-details-response";
+import type {
+  ArtistDetailsResponse,
+} from "@/redux/services/types/get-artist-details-response";
 import { cn } from "@/lib/utils";
 import SongCard from "./SongCard";
 import ChartCard from "./ChartCard";
+import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import Header from "../Header";
 
 type DataDisplayProps = {
   cardVariant: "chartCard" | "songCard";
   dataType: "songs" | "charts" | "artistDetails";
+};
+
+type CustomErrorResponseType = {
+  detail?: string;
 };
 
 const DataDisplay = ({ cardVariant, dataType }: DataDisplayProps) => {
@@ -30,7 +43,7 @@ const DataDisplay = ({ cardVariant, dataType }: DataDisplayProps) => {
       genre_code: genre,
     });
   }
-  const { data, isFetching, isError } = queryResult;
+  const { data, isFetching, isError, error } = queryResult;
   const relatedSongs =
     dataType == "artistDetails"
       ? (data as ArtistDetailsResponse)?.data[0]?.views["top-songs"]?.data
@@ -72,35 +85,42 @@ const DataDisplay = ({ cardVariant, dataType }: DataDisplayProps) => {
 
   if (!isFetching) {
     if (isError) {
-      content = <Error />;
+      const errorData = (error as FetchBaseQueryError)?.data;
+      const errorMessage =
+        (errorData as CustomErrorResponseType)?.detail ||
+        "Please try again after some time";
+
+      content = <Error errorMessage={errorMessage} />;
     } else {
       content = (
-        <div
-          className={cn(
-            "grid auto-grid",
-            dataType == "artistDetails" ? "gap-4" : "gap-8"
-          )}
-          style={
-            {
-              "--min-col-size": cardVariant == "chartCard" ? "1fr" : "200px",
-            } as CSSProperties
-          }
-        >
-          {dataType == "songs" &&
-            filteredData?.map((song, idx) => (
-              <SongCard {...song} songIndex={idx} />
-            ))}
-          {dataType == "charts" &&
-            filteredData?.map((song, idx) => (
-              <ChartCard {...song} songIndex={idx} />
-            ))}
-          {dataType == "artistDetails" &&
-            relatedSongs?.map((song, idx) => {
-              const { id, attributes } = song;
-              const chartCardArgs = { id, attributes };
-              return <ChartCard {...chartCardArgs} songIndex={idx} />;
+        <Content dataType={dataType} cardVariant={cardVariant}>
+          {dataType != "artistDetails" &&
+            filteredData?.map((song, idx) => {
+              return dataType == "songs" ? (
+                <SongCard {...song} songIndex={idx} />
+              ) : (
+                <ChartCard {...song} songIndex={idx} />
+              );
             })}
-        </div>
+
+          {dataType == "artistDetails" && (
+            <>
+              {
+                <Header
+                  headerType={"artistHeader"}
+                  data={data as ArtistDetailsResponse}
+                />
+              }
+              <br />
+              <p className="text-2xl font-bold">Top Songs by Artist</p>
+              {relatedSongs?.map((song, idx) => {
+                const { id, attributes } = song;
+                const chartCardArgs = { id, attributes };
+                return <ChartCard {...chartCardArgs} songIndex={idx} />;
+              })}
+            </>
+          )}
+        </Content>
       );
     }
   }
@@ -108,15 +128,39 @@ const DataDisplay = ({ cardVariant, dataType }: DataDisplayProps) => {
   return content;
 };
 
-const Error = () => {
+const Content = ({
+  dataType,
+  cardVariant,
+  children,
+}: {
+  dataType: string;
+  cardVariant: string;
+  children: ReactNode;
+}) => {
+  return (
+    <div
+      className={cn(
+        "grid auto-grid",
+        dataType == "artistDetails" ? "gap-4" : "gap-8"
+      )}
+      style={
+        {
+          "--min-col-size": cardVariant == "chartCard" ? "1fr" : "200px",
+        } as CSSProperties
+      }
+    >
+      {children}
+    </div>
+  );
+};
+
+const Error = ({ errorMessage }: { errorMessage: string }) => {
   return (
     <div className="flex-1 flex justify-center items-center">
       <p className="text-red-500 text-center font-light">
-        <span className="text-xl font-semibold">
-          Error while fetching top charts
-        </span>
+        <span className="text-xl font-semibold">Error while fetching data</span>
         <br />
-        Please try again later
+        {errorMessage}
       </p>
     </div>
   );

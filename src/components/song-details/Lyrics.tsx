@@ -1,4 +1,9 @@
-import type { LyricsArgs } from "./types";
+import type { TrackDetailsResponse } from "@/redux/services/types/get-track-details-response";
+
+export type LyricsArgs = {
+  data?: TrackDetailsResponse;
+};
+
 
 const Lyrics = ({ data }: LyricsArgs) => {
   const lyrics =
