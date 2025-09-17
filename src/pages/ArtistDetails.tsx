@@ -2,7 +2,9 @@ import DataDisplay from "@/components/DataDisplay";
 
 function ArtistDetails() {
   return (
-    <DataDisplay cardVariant="chartCard" dataType="artistDetails"/>
+    <>
+      <DataDisplay cardVariant="chartCard" dataType="artistDetails" />
+    </>
   );
 }
 

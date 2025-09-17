@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useCallback } from "react";
 
 import { useAppSelector, useAppDispatch } from "@/redux/hook";
 import {
@@ -6,52 +6,53 @@ import {
   setCurrentTime,
   pause,
   resume,
+  type Song,
 } from "@/redux/features/playerSlice";
 export default function useAudioPlayer() {
   const dispatch = useAppDispatch();
 
   const player = useAppSelector((state) => state.player);
-  const { activeSongIndex, charts, isPlaying } = player;
-  const activeSong = activeSongIndex != null? charts[activeSongIndex]: null;
+  const { isPlaying, activeSong } = player;
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  useEffect(() => {
-    if (!activeSong) return
-    const handleTimeUpdate = () => {
-      if (audioRef.current) {
-        dispatch(setCurrentTime(audioRef.current.currentTime));
-      }
-    };
+  const handleTimeUpdate = useCallback(() => {
+    if (audioRef.current) {
+      dispatch(setCurrentTime(audioRef.current.currentTime));
+    }
+  }, [activeSong]);
 
-    const handleLoadedMetadata = () => {
-      if (audioRef.current) {
-        dispatch(setDuration(audioRef.current.duration));
-        if (isPlaying) {
-          audioRef.current.play();
+  const handleLoadedMetadata = useCallback(() => {
+    if (audioRef.current) {
+      dispatch(setDuration(audioRef.current.duration));
+      if (isPlaying) {
+        audioRef.current.play();
+      }
+    }
+  }, [activeSong]);
+
+  const handleEnded = useCallback(() => {
+    if (audioRef.current) {
+      dispatch(pause());
+      setTimeout(() => {
+        if (audioRef.current) {
+          dispatch(setCurrentTime(0));
+          audioRef.current.currentTime = 0;
+          dispatch(resume());
         }
-      }
-    };
+      }, 1000);
+    }
+  }, [activeSong]);
 
-    const handleEnded = () => {
-      if (audioRef.current) {
-        dispatch(pause());
-        setTimeout(() => {
-          if (audioRef.current) {
-            dispatch(setCurrentTime(0));
-            audioRef.current.currentTime = 0;
-            dispatch(resume());
-          }
-        }, 1000);
-      }
-    };
+  useEffect(() => {
+    if (!activeSong) return;
 
-      const audio = new Audio(activeSong.previewUrl);
-      audioRef.current = audio;
+    const audio = new Audio(activeSong.previewUrl);
+    audioRef.current = audio;
 
-      audioRef.current.addEventListener("timeupdate", handleTimeUpdate);
-      audioRef.current.addEventListener("loadedmetadata", handleLoadedMetadata);
-      audioRef.current.addEventListener("ended", handleEnded);
+    audioRef.current.addEventListener("timeupdate", handleTimeUpdate);
+    audioRef.current.addEventListener("loadedmetadata", handleLoadedMetadata);
+    audioRef.current.addEventListener("ended", handleEnded);
     return () => {
       if (audioRef.current) {
         audioRef.current.pause();
@@ -77,6 +78,7 @@ export default function useAudioPlayer() {
   }, [isPlaying]);
 
   return {
-    audioRef, activeSong
-  }
+    audioRef,
+    activeSong,
+  };
 }

@@ -10,19 +10,19 @@ const ChartCard = ({
   attributes,
   relationships,
   songIndex,
+  songCategory,
 }: ChartCardArgs) => {
-  const activeSongIndex = useAppSelector(
-    (state) => state.player.activeSongIndex
+  const { activeSongIndex, activeSongCategory } = useAppSelector(
+    (state) => state.player
   );
 
-  const albumName = attributes?.albumName || "Unknown Album"
-  const artworkUrl = attributes?.artwork?.url || ""
-  const artistName = attributes?.artistName || "Unknown Artist"
-  const artistId = relationships?.artists?.data[0]?.id || null
+  const albumName = attributes?.albumName || "Unknown Album";
+  const artworkUrl = attributes?.artwork?.url || "";
+  const artistName = attributes?.artistName || "Unknown Artist";
+  const artistId = relationships?.artists?.data[0]?.id || null;
 
-
-
-  const isActive = songIndex == activeSongIndex;
+  const isActive =
+    songIndex == activeSongIndex && songCategory == activeSongCategory;
   return (
     <>
       <Card
@@ -39,10 +39,8 @@ const ChartCard = ({
           />
         </CardHeader>
         <CardContent className="flex flex-col flex-1 items-start p-0">
-          <p className="font-normal text-[13px] leading-5">
-            {albumName}
-          </p>
-          {(artistId != null) && (
+          <p className="font-normal text-[13px] leading-5">{albumName}</p>
+          {artistId != null && (
             <Link
               to={`artists/${artistId}`}
               className="text-muted-foreground text-xs hover:underline"
@@ -52,11 +50,15 @@ const ChartCard = ({
           )}
         </CardContent>
         <CardFooter className="basis-1/6 grid p-0 place-content-center">
-          <PlayPauseButton songIndex={songIndex} variant="chartCard" />
+          <PlayPauseButton
+            songIndex={songIndex}
+            variant="chartCard"
+            songCategory={songCategory}
+          />
         </CardFooter>
       </Card>
     </>
   );
 };
 
-export default ChartCard
+export default ChartCard;

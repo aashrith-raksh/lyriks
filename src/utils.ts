@@ -1,3 +1,4 @@
+import type { Song } from "./redux/features/playerSlice";
 import type { ArtistDetailsResponse } from "./redux/services/types/get-artist-details-response";
 import type { TopChartsResponse } from "./redux/services/types/get-top-charts-response";
 
@@ -30,14 +31,15 @@ export const getTopSongsOfArtist = (
   return [];
 };
 
-export function mapTopChartsToSongs(data: TopChartsResponse[]) {
+export function mapTopChartsToSongs(data: TopChartsResponse[]): Song[] {
   return (data as TopChartsResponse[])
     .slice(0, 20)
     .map(({ id, attributes }) => ({
       artworkUrl: attributes.artwork.url,
       previewUrl: attributes.previews[0]?.url || "",
-      chartId: id,
+      id,
       title: attributes.albumName,
       artist: attributes.artistName,
+      songCategory: "charts"
     }));
 }

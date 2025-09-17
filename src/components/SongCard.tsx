@@ -5,6 +5,7 @@ import type {
 } from "@/redux/services/types/get-top-charts-response";
 import PlayPauseButton from "./PlayPauseButton";
 import { useAppSelector } from "@/redux/hook";
+import type { SongCategory } from "@/redux/features/playerSlice";
 
 type SongCardAttributes = {
   albumName?: string;
@@ -16,6 +17,8 @@ export type SongCardArgs = {
   attributes?: SongCardAttributes;
   relationships?: Partial<Relationships>;
   songIndex: number;
+  songCategory: SongCategory;
+
 };
 
 const SongCard = ({
@@ -23,9 +26,10 @@ const SongCard = ({
   attributes,
   relationships,
   songIndex,
+  songCategory
 }: SongCardArgs) => {
-  const activeSongIndex = useAppSelector(
-    (state) => state.player.activeSongIndex
+  const {activeSongIndex, activeSongCategory} = useAppSelector(
+    (state) => state.player
   );
 
   const albumName = attributes?.albumName || "Unknown Album"
@@ -34,7 +38,7 @@ const SongCard = ({
   const artistId = relationships?.artists?.data[0]?.id || null
 
 
-  const isActive = songIndex == activeSongIndex;
+  const isActive = (songIndex == activeSongIndex && songCategory == activeSongCategory);
 
   return (
     <Card
@@ -49,7 +53,7 @@ const SongCard = ({
           alt={albumName + " album cover"}
           className="w-full h-40 object-cover rounded-md"
         />
-        <PlayPauseButton songIndex={songIndex} />
+        <PlayPauseButton songIndex={songIndex} songCategory={songCategory} />
       </CardContent>
       <CardFooter className="flex flex-col items-start px-0">
         <Link className="font-semibold hover:underline" to={`/songs/${id}`}>{attributes!.albumName}</Link>

@@ -4,7 +4,11 @@ import {
 } from "@/redux/services/shazamCore";
 import { useEffect, useMemo } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { setCharts } from "@/redux/features/playerSlice";
+import {
+  setArtistTopSongs,
+  setCharts,
+  type Song,
+} from "@/redux/features/playerSlice";
 import type { TopChartsResponse } from "@/redux/services/types/get-top-charts-response";
 import { useParams } from "react-router-dom";
 import type { ArtistDetailsResponse } from "@/redux/services/types/get-artist-details-response";
@@ -55,7 +59,6 @@ const DataDisplay = ({ cardVariant, dataType }: DataDisplayProps) => {
     [data, dataType]
   );
 
-
   const filteredData = useMemo(() => {
     return filterDataBySearchTerm(
       data as TopChartsResponse[],
@@ -65,14 +68,43 @@ const DataDisplay = ({ cardVariant, dataType }: DataDisplayProps) => {
   }, [data, searchTerm, dataType]);
 
   useEffect(() => {
-    if (dataType == "songs") {
+    if (dataType != "artistDetails") {
       if (data) {
+        console.log("Setting topCharts, dataType:", dataType)
         const songs = mapTopChartsToSongs(data as TopChartsResponse[]);
 
         dispatch(setCharts(songs));
       }
+    } else {
+      if (data) {
+        console.log("Setting artistTopSongs, dataType:", dataType)
+
+        const artistTopSongs: Song[] = topSongsOfArtist.slice(0,10).map((item) => {
+          const title = item.attributes.albumName || "Unknown album";
+          const artist = item.attributes.artistName || "Unknown artist";
+          const id = item.id;
+          const previewUrl = item.attributes.previews?.[0]?.url || "";
+          const artworkUrl = item.attributes.artwork.url;
+
+          return {
+            title,
+            artist,
+            id,
+            previewUrl,
+            artworkUrl,
+            songCategory: "artistTopSongs"
+          };
+        });
+
+        dispatch(
+          setArtistTopSongs({
+            activeSongCategory: "artistTopSongs",
+            artistTopSongs,
+          })
+        );
+      }
     }
-  }, [data, dispatch, dataType]);
+  }, [data, dispatch, dataType, topSongsOfArtist]);
 
   let content = <Loading />;
 
@@ -92,11 +124,11 @@ const DataDisplay = ({ cardVariant, dataType }: DataDisplayProps) => {
               {filteredData?.map((song, idx) =>
                 dataType === "songs" ? (
                   <li key={song?.id}>
-                    <SongCard {...song} songIndex={idx} />
+                    <SongCard songCategory={"charts"} {...song} songIndex={idx} />
                   </li>
                 ) : (
                   <li key={song?.id}>
-                    <ChartCard {...song} songIndex={idx} />
+                    <ChartCard songCategory={"charts"} {...song} songIndex={idx} />
                   </li>
                 )
               )}
@@ -117,7 +149,7 @@ const DataDisplay = ({ cardVariant, dataType }: DataDisplayProps) => {
                   const chartCardArgs = { id, attributes };
                   return (
                     <li key={song?.id}>
-                      <ChartCard {...chartCardArgs} songIndex={idx} />
+                      <ChartCard songCategory={"artistTopSongs"} {...chartCardArgs} songIndex={idx} />
                     </li>
                   );
                 })}
@@ -131,10 +163,5 @@ const DataDisplay = ({ cardVariant, dataType }: DataDisplayProps) => {
 
   return content;
 };
-
-
-
-
-
 
 export default DataDisplay;
