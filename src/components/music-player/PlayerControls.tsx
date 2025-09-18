@@ -3,6 +3,7 @@ import { Button } from "../ui/button";
 import {
   pause,
   resume,
+  setActiveSong,
   setActiveSongIndex,
   type Song,
 } from "@/redux/features/playerSlice";
@@ -19,14 +20,16 @@ const PlayerControls = ({ activeSong }: { activeSong: Song | null }) => {
   };
 
   const player = useAppSelector((state) => state.player);
-  const { activeSongIndex, isPlaying, charts } = player;
+  const { activeSongIndex, isPlaying, charts, activeSongCategory } = player;
 
   const moveToPrevSong = () => {
     dispatch(setActiveSongIndex(activeSongIndex! - 1));
+    dispatch(setActiveSong({ activeSongCategory }));
   };
 
   const moveToNextSong = () => {
     dispatch(setActiveSongIndex(activeSongIndex! + 1));
+    dispatch(setActiveSong({ activeSongCategory }));
   };
   return (
     <div className="flex items-center justify-between mb-1">
