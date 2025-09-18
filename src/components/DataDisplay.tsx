@@ -22,7 +22,7 @@ import {
   mapTopChartsToSongs,
 } from "@/utils";
 import Loading from "./Loading";
-import Error from "./Error";
+import Error, { type CustomErrorResponseType } from "./Error";
 import DataDisplayContent from "./DataDisplayContent";
 
 type DataDisplayProps = {
@@ -30,9 +30,7 @@ type DataDisplayProps = {
   dataType: "songs" | "charts" | "artistDetails";
 };
 
-type CustomErrorResponseType = {
-  detail?: string;
-};
+
 
 const DataDisplay = ({ cardVariant, dataType }: DataDisplayProps) => {
   const { genre, searchTerm } = useAppSelector((state) => state.songsFilter);
@@ -70,14 +68,12 @@ const DataDisplay = ({ cardVariant, dataType }: DataDisplayProps) => {
   useEffect(() => {
     if (dataType != "artistDetails") {
       if (data) {
-        console.log("Setting topCharts, dataType:", dataType)
         const songs = mapTopChartsToSongs(data as TopChartsResponse[]);
 
         dispatch(setCharts(songs));
       }
     } else {
       if (data) {
-        console.log("Setting artistTopSongs, dataType:", dataType)
 
         const artistTopSongs: Song[] = topSongsOfArtist.slice(0,10).map((item) => {
           const title = item.attributes.albumName || "Unknown album";
