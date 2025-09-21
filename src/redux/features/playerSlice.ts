@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-export type SongCategory = "charts" | "artistTopSongs";
+export type SongCategory = "charts" | "artistTopSongs" | "around-you";
 
 export interface Song {
   artworkUrl: string;
@@ -14,6 +14,7 @@ export interface Song {
 interface PlayerState {
   charts: Song[];
   artistTopSongs: Song[];
+  topSongsAroundYou: Song[];
   activeSongCategory: SongCategory;
   activeSong: Song | null;
   isPlaying: boolean;
@@ -27,6 +28,7 @@ interface PlayerState {
 const initialState: PlayerState = {
   charts: [],
   artistTopSongs: [],
+  topSongsAroundYou: [],
   activeSong: null,
   activeSongCategory: "charts",
   isPlaying: false,
@@ -54,6 +56,14 @@ const playerSlice = createSlice({
       state.activeSongCategory = action.payload.activeSongCategory;
       state.artistTopSongs = action.payload.artistTopSongs;
     },
+    setTopSongsAroundYou: (
+      state,
+      action: PayloadAction<{
+        topSongsAroundYou: Song[];
+      }>
+    ) => {
+      state.topSongsAroundYou = action.payload.topSongsAroundYou;
+    },
     setActiveSongIndex: (state, action: PayloadAction<number>) => {
       state.activeSongIndex = action.payload;
       state.isPlaying = true;
@@ -62,18 +72,26 @@ const playerSlice = createSlice({
       state,
       action: PayloadAction<{ activeSongCategory: SongCategory }>
     ) => {
-      state.activeSongCategory = action.payload.activeSongCategory
-      if (action.payload.activeSongCategory == "artistTopSongs") {
-        state.activeSong =
-          state.activeSongIndex != null
-            ? state.artistTopSongs[state.activeSongIndex]
-            : null;
-          }else{
-            
-            state.activeSong =
-              state.activeSongIndex != null
-                ? state.charts[state.activeSongIndex]
-                : null;
+      state.activeSongCategory = action.payload.activeSongCategory;
+      switch (action.payload.activeSongCategory) {
+        case "artistTopSongs":
+          state.activeSong =
+            state.activeSongIndex != null
+              ? state.artistTopSongs[state.activeSongIndex]
+              : null;
+          break;
+        case "around-you":
+          state.activeSong =
+            state.activeSongIndex != null
+              ? state.topSongsAroundYou[state.activeSongIndex]
+              : null;
+          break;
+        default:
+          state.activeSong =
+            state.activeSongIndex != null
+              ? state.charts[state.activeSongIndex]
+              : null;
+          break;
       }
     },
     resume: (state) => {
@@ -104,11 +122,12 @@ export const {
   setActiveSongIndex,
   setCharts,
   setArtistTopSongs,
+  setTopSongsAroundYou,
   resume,
   pause,
   setVolume,
   setIsMuted,
   setDuration,
   setCurrentTime,
-  setActiveSong
+  setActiveSong,
 } = playerSlice.actions;
