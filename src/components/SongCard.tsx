@@ -18,6 +18,7 @@ export type SongCardArgs = {
   relationships?: Partial<Relationships>;
   songIndex: number;
   songCategory: SongCategory;
+  clickable?: boolean;
 
 };
 
@@ -26,7 +27,8 @@ const SongCard = ({
   attributes,
   relationships,
   songIndex,
-  songCategory
+  songCategory,
+  clickable=true
 }: SongCardArgs) => {
   const {activeSongIndex, activeSongCategory} = useAppSelector(
     (state) => state.player
@@ -53,12 +55,12 @@ const SongCard = ({
           alt={albumName + " album cover"}
           className="w-full h-40 object-cover rounded-md"
         />
-        <PlayPauseButton songIndex={songIndex} songCategory={songCategory} />
+        {clickable && <PlayPauseButton songIndex={songIndex} songCategory={songCategory} />}
       </CardContent>
       <CardFooter className="flex flex-col items-start px-0">
         <Link className="font-semibold hover:underline" to={`/songs/${id}`}>{attributes!.albumName}</Link>
         <Link
-          to={`artists/${artistId}`}
+          to={`/artists/${artistId}`}
           className="text-muted-foreground text-sm hover:underline"
         >
           {artistName}
