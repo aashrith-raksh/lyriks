@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import {
   Card,
   CardHeader,
@@ -14,12 +13,6 @@ const TopCharts = () => {
       <CardHeader className="flex flex-row items-baseline justify-between">
         <CardTitle className="text-lg">Top Charts</CardTitle>
         <CardAction className=" self-auto">
-          <Link
-            to="top-charts"
-            className="text-xs font-normal  hover:underline"
-          >
-            See more
-          </Link>
         </CardAction>
       </CardHeader>
       <CardContent className="py-0 overflow-y-scroll scrollbar-custom">

@@ -2,12 +2,10 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "@/pages/RootLayout";
 import Discover from "@/pages/Discover";
 import TopArtists from "@/pages/TopArtists";
-import TopCharts from "@/pages/TopCharts";
 import AroundYou from "@/pages/AroundYou";
 import ArtistDetails from "./pages/ArtistDetails";
 import SongDetails from "@/pages/SongDetails";
 import Search from "@/pages/Search";
-import Test from "./components/test/Test";
 import HomeLayout from "@/layouts/HomeLayout";
 
 const router = createBrowserRouter([
@@ -23,11 +21,9 @@ const router = createBrowserRouter([
           { path: "artists/:id", element: <ArtistDetails /> },
           { path: "around-you", element: <AroundYou /> },
           { path: "top-artists", element: <TopArtists /> },
-          { path: "top-charts", element: <TopCharts /> },
           { path: "search/:searchTerm", element: <Search /> },
         ],
       },
-      { path: "test", element: <Test /> },
     ],
   },
 ]);
