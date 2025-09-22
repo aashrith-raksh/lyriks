@@ -1,20 +1,18 @@
+import { Suspense, lazy } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { lazy, Suspense } from "react";
-
 import RootLayout from "@/pages/RootLayout";
 import HomeLayout from "@/layouts/HomeLayout";
 
-// 🔹 Lazy load route-level pages
-const Discover = lazy(() => import("@/pages/Discover"));
+// Eager load homepage (Discover)
+import Discover from "@/pages/Discover";
+import Loading from "./components/Loading";
+
+// Lazy load the rest
 const TopArtists = lazy(() => import("@/pages/TopArtists"));
 const AroundYou = lazy(() => import("@/pages/AroundYou"));
 const ArtistDetails = lazy(() => import("@/pages/ArtistDetails"));
 const SongDetails = lazy(() => import("@/pages/SongDetails"));
-
-// 🔹 Fallback loader while chunks are downloading
-function Loader() {
-  return <div className="p-4 text-center">Loading…</div>;
-}
+const Search = lazy(() => import("@/pages/Search"));
 
 const router = createBrowserRouter([
   {
@@ -24,46 +22,12 @@ const router = createBrowserRouter([
       {
         element: <HomeLayout />,
         children: [
-          {
-            index: true,
-            element: (
-              <Suspense fallback={<Loader />}>
-                <Discover />
-              </Suspense>
-            ),
-          },
-          {
-            path: "songs/:songId",
-            element: (
-              <Suspense fallback={<Loader />}>
-                <SongDetails />
-              </Suspense>
-            ),
-          },
-          {
-            path: "artists/:id",
-            element: (
-              <Suspense fallback={<Loader />}>
-                <ArtistDetails />
-              </Suspense>
-            ),
-          },
-          {
-            path: "around-you",
-            element: (
-              <Suspense fallback={<Loader />}>
-                <AroundYou />
-              </Suspense>
-            ),
-          },
-          {
-            path: "top-artists",
-            element: (
-              <Suspense fallback={<Loader />}>
-                <TopArtists />
-              </Suspense>
-            ),
-          },
+          { index: true, element: <Discover /> }, // eager
+          { path: "songs/:songId", element: <SongDetails /> }, // lazy
+          { path: "artists/:id", element: <ArtistDetails /> }, // lazy
+          { path: "around-you", element: <AroundYou /> }, // lazy
+          { path: "top-artists", element: <TopArtists /> }, // lazy
+          { path: "search/:searchTerm", element: <Search /> }, // lazy
         ],
       },
     ],
@@ -71,7 +35,11 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <Suspense fallback={<Loading/>}>
+      <RouterProvider router={router} />
+    </Suspense>
+  );
 }
 
 export default App;
