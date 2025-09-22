@@ -34,6 +34,8 @@ function AroundYou() {
         songIndex: idx,
         songCategory: "around-you",
       }));
+    }else{
+      return []
     }
   }, [data]);
 
@@ -77,7 +79,7 @@ function AroundYou() {
               } as CSSProperties
             }
           >
-            {filteredData!.map((item) => (
+            {filteredData?.map((item) => (
               <li>
                 <SongCard {...item} />
               </li>
