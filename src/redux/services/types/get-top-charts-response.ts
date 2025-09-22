@@ -45,87 +45,97 @@ export interface Artwork {
  width:      number;
 }
 
-export enum AudioLocale {
- Ar = "ar",
- Ba = "ba",
- EnUS = "en-US",
- EsES = "es-ES",
- Fi = "fi",
- FrFR = "fr-FR",
- Hi = "hi",
- It = "it",
- Mul = "mul",
- PtPT = "pt-PT",
- Ru = "ru",
- Ss = "ss",
- Zxx = "zxx",
-}
+export type AudioLocale =
+  | "ar"
+  | "ba"
+  | "en-US"
+  | "es-ES"
+  | "fi"
+  | "fr-FR"
+  | "hi"
+  | "it"
+  | "mul"
+  | "pt-PT"
+  | "ru"
+  | "ss"
+  | "zxx";
 
-export enum AudioTrait {
- Atmos = "atmos",
- HiResLossless = "hi-res-lossless",
- Lossless = "lossless",
- LossyStereo = "lossy-stereo",
- Spatial = "spatial",
-}
+export const AudioTrait = {
+ Atmos: "atmos",
+ HiResLossless: "hi-res-lossless",
+ Lossless: "lossless",
+ LossyStereo: "lossy-stereo",
+ Spatial: "spatial",
+} as const
 
-export enum ContentRating {
- Clean = "clean",
- Explicit = "explicit",
-}
+export type AudioTrait = (typeof AudioTrait)[keyof typeof AudioTrait]
+// ---- ContentRating ----
+export const ContentRating = {
+  Clean: "clean",
+  Explicit: "explicit",
+} as const;
 
+export type ContentRating = (typeof ContentRating)[keyof typeof ContentRating];
+
+// ---- Kind ----
+export const Kind = {
+  Song: "song",
+} as const;
+
+export type Kind = (typeof Kind)[keyof typeof Kind];
+
+// ---- DatumType ----
+export const DatumType = {
+  Artists: "artists",
+  MusicVideos: "music-videos",
+} as const;
+
+export type DatumType = (typeof DatumType)[keyof typeof DatumType];
+
+// ---- Interfaces remain unchanged ----
 export interface EditorialNotes {
- short: string;
+  short: string;
 }
 
 export interface PlayParams {
- id:   string;
- kind: Kind;
-}
-
-export enum Kind {
- Song = "song",
+  id: string;
+  kind: Kind;
 }
 
 export interface Preview {
- url: string;
+  url: string;
 }
 
 export interface Meta {
- contentVersion: ContentVersion;
- formerIds?:     string[];
+  contentVersion: ContentVersion;
+  formerIds?: string[];
 }
 
 export interface ContentVersion {
- MZ_INDEXER: number;
- RTCI:       number;
+  MZ_INDEXER: number;
+  RTCI: number;
 }
 
 export interface Relationships {
- artists:        Artists;
- "music-videos": MusicVideos;
+  artists: Artists;
+  "music-videos": MusicVideos;
 }
 
 export interface Artists {
- data: Datum[];
- href: string;
+  data: Datum[];
+  href: string;
 }
 
 export interface Datum {
- href: string;
- id:   string;
- type: DatumType;
-}
-
-export enum DatumType {
- Artists = "artists",
- MusicVideos = "music-videos",
+  href: string;
+  id: string;
+  type: DatumType;
 }
 
 export interface MusicVideos {
- data:  Datum[];
- href:  string;
- next?: string;
+  data: Datum[];
+  href: string;
+  next?: string;
 }
 
 export type RootObjectType = "songs";
