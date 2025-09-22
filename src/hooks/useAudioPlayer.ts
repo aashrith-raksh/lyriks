@@ -6,7 +6,6 @@ import {
   setCurrentTime,
   pause,
   resume,
-  type Song,
 } from "@/redux/features/playerSlice";
 export default function useAudioPlayer() {
   const dispatch = useAppDispatch();
