@@ -1,4 +1,4 @@
-import { HashIcon, HomeIcon, MapPlusIcon, UsersIcon } from "lucide-react";
+import { HomeIcon, MapPlusIcon, UsersIcon } from "lucide-react";
 
 export const genres = [
   { title: "Pop", value: "POP" },
@@ -21,7 +21,6 @@ export const links = [
   { name: "Discover", to: "/", icon: HomeIcon },
   { name: "Around You", to: "/around-you", icon: MapPlusIcon },
   { name: "Top Artists", to: "/top-artists", icon: UsersIcon },
-  { name: "Top Charts", to: "/top-charts", icon: HashIcon },
 ];
 
 export const songs = [
