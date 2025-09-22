@@ -10,7 +10,6 @@ const TopArtists = lazy(() => import("@/pages/TopArtists"));
 const AroundYou = lazy(() => import("@/pages/AroundYou"));
 const ArtistDetails = lazy(() => import("@/pages/ArtistDetails"));
 const SongDetails = lazy(() => import("@/pages/SongDetails"));
-const Search = lazy(() => import("@/pages/Search"));
 
 // 🔹 Fallback loader while chunks are downloading
 function Loader() {
@@ -62,14 +61,6 @@ const router = createBrowserRouter([
             element: (
               <Suspense fallback={<Loader />}>
                 <TopArtists />
-              </Suspense>
-            ),
-          },
-          {
-            path: "search/:searchTerm",
-            element: (
-              <Suspense fallback={<Loader />}>
-                <Search />
               </Suspense>
             ),
           },
