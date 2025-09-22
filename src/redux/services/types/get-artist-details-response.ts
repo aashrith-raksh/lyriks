@@ -90,6 +90,7 @@ export interface AlbumsDatum {
 export interface FluffyAttributes {
  artistName?:            Name;
  artwork:                Artwork;
+ // eslint-disable-next-line @typescript-eslint/no-explicit-any
  audioTraits?:           any[];
  curatorName?:           string;
  description?:           Description;
@@ -234,16 +235,22 @@ export interface TentacledAttributes {
  videoTraits?:               string[];
 }
 
-export enum AudioLocale {
- EnUS = "en-US",
-}
+export const AudioLocale = {
+ EnUS : "en-US",
+} as const
 
-export enum AudioTrait {
- Atmos = "atmos",
- Lossless = "lossless",
- LossyStereo = "lossy-stereo",
- Spatial = "spatial",
-}
+export type AudioLocale = (typeof AudioLocale)[keyof typeof AudioLocale]
+
+export const AudioTrait = {
+ Atmos: "atmos",
+ Lossless: "lossless",
+ LossyStereo: "lossy-stereo",
+ Spatial: "spatial",
+} as const
+
+export type AudioTrait = (typeof AudioTrait)[keyof typeof AudioTrait]
+
+
 
 export interface TentacledEditorialArtwork {
  bannerUber?:         Artwork;
